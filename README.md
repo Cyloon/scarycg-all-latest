@@ -27,36 +27,36 @@
 
 ## 🧾📕📚 Here are a few of my resources: 💻💾💽
 
-    	** First and foremost. WAWASENSEI! **  [WawaSensei YouTube Channel](https://www.youtube.com/@WawaSensei)
-    	I've spent many hours now watching his videos and going through his repos!
+** First and foremost. WAWASENSEI! ** https://www.youtube.com/@WawaSensei
+I've spent many hours now watching his videos and going through his repos!
 
-    	** React three fiber docs, although they are lacking in some aspects: **
-    	[https://r3f.docs.pmnd.rs/getting-started/introduction]
-    	[https://github.com/pmndrs/react-three-fiber]
+** React three fiber docs, although they are lacking in some aspects: **
+https://r3f.docs.pmnd.rs/getting-started/introduction
+https://github.com/pmndrs/react-three-fiber
 
-    	React three fiber is a direct overlay ontop of Three js though so everything is
-    	destructable.
+React three fiber is a direct overlay ontop of Three js though so everything is
+destructable.
 
-    	The Poimandres groups have done an enormous job!
+The Poimandres groups have done an enormous job!
 
-    	** The threejs forum. A great source of help and a very nice community! **
-    	[https://discourse.threejs.org/]
+** The threejs forum. A great source of help and a very nice community! **
+https://discourse.threejs.org/
 
-    	** drei an extension on r3f **
-    	[https://github.com/pmndrs/drei]
-    	[http://drei.docs.pmnd.rs/getting-started/introduction]
+** drei an extension on r3f **
+https://github.com/pmndrs/drei
+http://drei.docs.pmnd.rs/getting-started/introduction
 
-    	** React Spring **
-    	[https://www.react-spring.dev/]
-    	[https://github.com/pmndrs/react-spring]
+** React Spring **
+https://www.react-spring.dev/
+https://github.com/pmndrs/react-spring
 
-    	** To optimize glTF models and get a convinient *.jsx to use as a component! **
-    	[https://github.com/pmndrs/gltfjsx]
+** To optimize glTF models and get a convinient \*.jsx to use as a component! **
+https://github.com/pmndrs/gltfjsx
 
-    	** Quaternius! **
-    	I've used several of their free models for this project! For example from the Cube World pack,
-    	the Ultimate Monster Pack and so on.
-    	[https://quaternius.com/index.html]
+** Quaternius! **
+I've used several of their free models for this project! For example from the Cube World pack,
+the Ultimate Monster Pack and so on.
+https://quaternius.com/index.html
 
 ## Usage Rights & Fair Play Statement
 
