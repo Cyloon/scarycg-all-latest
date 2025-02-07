@@ -27,7 +27,7 @@
 
 ## 🧾📕📚 Here are a few of my resources: 💻💾💽
 
-    	** First and foremost. WAWASENSEI! **  [https://www.youtube.com/@WawaSensei]
+    	** First and foremost. WAWASENSEI! **  [https://www.youtube.com/@WawaSensei](https://www.youtube.com/@WawaSensei)
     	I've spent many hours now watching his videos and going through his repos!
 
     	** React three fiber docs, although they are lacking in some aspects: **
