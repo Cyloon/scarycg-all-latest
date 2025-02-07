@@ -1,0 +1,10 @@
+:root,
+body {
+  margin: 0;
+  height: 100dvh;
+  touch-action: pan-x pan-y;
+}
+
+.canvas {
+  height: 100dvh;
+}
