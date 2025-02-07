@@ -57,3 +57,26 @@
     	I've used several of their free models for this project! For example from the Cube World pack,
     	the Ultimate Monster Pack and so on.
     	[https://quaternius.com/index.html]
+
+## Usage Rights & Fair Play Statement
+
+This game is open source under the MIT License to support learning and collaboration. However, as the original creator, I kindly request that:
+
+- ✅ Feel free to:
+
+  - Study the code and learn from it
+  - Fork the repository for your own learning
+  - Suggest improvements and submit pull requests
+  - Use code snippets in your own projects
+  - Share and adapt the code for non-commercial purposes
+
+- ❌ Please don't:
+  - Redistribute the game as-is commercially
+  - Sell copies of the game without significant modifications
+  - Present this work as your own
+
+While the MIT License legally allows commercial use, this project was created as an educational endeavor, and I trust users to respect its intended purpose. If you're interested in commercial applications, please reach out to discuss your plans first.
+
+Thank you for respecting these guidelines! 🙏
+
+© [Daniel Pettersson] [2025]
