@@ -12,13 +12,18 @@ function AnimatedModel({
   healthbar,
   spawndelay,
   duration = 12000,
+  state,
+  onPositionUpdate,
+  children,
 }) {
   const ref = useRef();
   const healthBarRef = useRef(); // Ref for the health bar
+  const curveRef = useRef();
 
   const curve = useMemo(() => {
     const curvePoints = points.map((p) => new THREE.Vector3(...p));
-    return new THREE.CatmullRomCurve3(curvePoints);
+    curveRef.current = new THREE.CatmullRomCurve3(curvePoints);
+    return curveRef.current;
   }, [points]);
 
   // Generate a random delay between 0 and 5000 ms (0 to 5 seconds)
@@ -28,10 +33,23 @@ function AnimatedModel({
   const { progress } = useSpring({
     from: { progress: 0 },
     to: { progress: 1 }, // progress goes from 0 to 1
-    config: { duration, tension: 180, friction: 12 }, // Duration in milliseconds
+    config: {
+      duration: state === "DEATH" ? duration / 2 : duration,
+      tension: state === "ATTACK" ? 210 : 180,
+      friction: state === "ATTACK" ? 20 : 12,
+    },
+    loop: state !== "DEATH",
+    pause: state === "ATTACK",
+    onRest: () => {
+      if (state === "DEATH") {
+        console.log("Monster is dead");
+      }
+    },
+
+    /*    // Duration in milliseconds
     delay: spawndelay ?? randomDelay, // Add the random delay
     reset: true,
-    loop: true, // Loops the animation
+    loop: true, // Loops the animation */
   });
 
   // Use `useFrame` to update the zombie's position along the curve
@@ -54,11 +72,12 @@ function AnimatedModel({
     if (healthbar && healthBarRef.current) {
       healthBarRef.current.position.set(position.x, position.y + 3, position.z); // Above the model
     }
+    onPositionUpdate?.(position, ref.current.rotation);
   });
 
   return (
     <>
-      <animated.group ref={ref}>{component}</animated.group>
+      <animated.group ref={ref}>{children}</animated.group>
       {healthbar && (
         <group ref={healthBarRef}>
           <Healthbar health={component.props.health} position={[0, 0, 0]} />

@@ -55,9 +55,17 @@ export function useEnemyDetection({
 
         if (intersects.length > 0) {
           const firstHit = intersects[0];
-          if (firstHit.object.userData?.type === "enemy") {
+          let currentObject = firstHit.object;
+
+          while (currentObject && !currentObject.userData?.type) {
+            currentObject = currentObject.parent;
+          }
+          if (
+            currentObject?.userData?.type === "enemy" &&
+            currentObject.userData?.canTakeDamage
+          ) {
             try {
-              firstHit.object.userData.handleDamage(1);
+              currentObject.userData.handleDamage(1);
               addScore(1);
             } catch (error) {
               console.warn("Error handling enemy damage:", error);
