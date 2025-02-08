@@ -27,6 +27,8 @@ import RotatingStars from "./RotatingStars";
 import { useState } from "react";
 import Zombieprespos from "./Zombieprespos";
 import { MonsterSpawner } from "./MonsterSpawner";
+import { GameUI } from "./GameUI";
+import Skeleton from "./monsters/Skeleton";
 
 //import * as THREE from "three";
 
@@ -126,6 +128,7 @@ export function Scene() {
 
   return (
     <>
+      <GameUI />
       <OrbitControls
         target={[0, 4, -10]}
         enableZoom={false}
@@ -160,6 +163,7 @@ export function Scene() {
       <Moonlight />
       <Flashlight />
       <MonsterSpawner />
+      <Skeleton position={[0, 0, 0]} />
 
       {/* {enemies.map((enemy, index) => (
         <AnimatedModel

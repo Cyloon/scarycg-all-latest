@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useGesture } from "react-use-gesture";
+import { useGesture } from "@use-gesture/react";
 import * as THREE from "three";
 
 export function useSpotlightControls({
@@ -29,7 +29,7 @@ export function useSpotlightControls({
     {
       onWheel: ({ delta: [_, dy] }) => {
         if (isPaused) return;
-        const delta = dy * -0.001;
+        const delta = dy * -0.0005;
         updateSpotlightAngle(delta);
       },
 
@@ -77,3 +77,5 @@ export function useSpotlightControls({
 
   return { bind, updateRadius, updateSpotlightAngle };
 }
+
+//<div {...bind()} style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }} />

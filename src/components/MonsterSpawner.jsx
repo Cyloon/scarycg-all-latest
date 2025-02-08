@@ -1,45 +1,54 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Skeleton } from "./monsters/Skeleton";
-
-const SPAWN_POINTS = [
-  [0, 0, 0],
-  [0, 0, 0],
-  [0, 0, 0],
-  [0, 0, 0],
-];
+import { SPAWN_POINTS, MONSTERS } from "../config/monsters";
+import { useGameStore } from "../stores/gameStore";
+import Zombie from "./monsters/Zombie";
 
 export function MonsterSpawner() {
-  const [monsters, setMonsters] = useState([]);
-  const [gameState, setGameState] = useState("playing");
+  //const [monsters, setMonsters] = useState([]);
+  //const [gameState, setGameState] = useState("playing");
+
+  const spawnTimerRef = useRef(null);
+
+  const { addEnemy, activeEnemies, gameState } = useGameStore();
+
+  const spawnMonster = () => {
+    const spawnPoint = SPAWN_POINTS[1]; //[Math.floor(Math.random() * SPAWN_POINTS.length)];
+
+    let availableTypes = ["skeleton"];
+
+    const monsterType =
+      availableTypes[Math.floor(Math.random() * availableTypes.length)];
+
+    const enemyId = `enemy-${Date.now()}-${Math.random()}`;
+    addEnemy({
+      id: enemyId,
+      type: "skeleton", //monsterType,
+      position: spawnPoint,
+    });
+  };
 
   useEffect(() => {
     if (gameState === "playing") {
-      const spawnInterval = setInterval(() => {
-        const spawnPoint =
-          SPAWN_POINTS[Math.floor(Math.random() * SPAWN_POINTS.length)];
+      const spawnInterval = Math.floor(Math.random() * 5000);
+      spawnTimerRef.current = setInterval(() => {
+        spawnMonster();
+      }, spawnInterval);
+      console.log("spawnInterval", spawnInterval);
+      console.log("gameState", gameState);
 
-        setMonsters((prev) => [
-          ...prev,
-          {
-            id: `monster-${Date.now()}`,
-            position: spawnPoint,
-            type: "skeleton",
-          },
-        ]);
-      }, 5000);
-
-      return () => clearInterval(spawnInterval);
+      return () => {
+        if (spawnTimerRef.current) {
+          clearInterval(spawnTimerRef.current);
+        }
+      };
     }
   }, [gameState]);
 
   return (
     <>
-      {monsters.map((monster) => (
-        <Skeleton
-          key={monster.id}
-          id={monster.id}
-          position={monster.position}
-        />
+      {activeEnemies.map((enemy) => (
+        <Skeleton key={enemy.id} id={enemy.id} position={enemy.position} />
       ))}
     </>
   );

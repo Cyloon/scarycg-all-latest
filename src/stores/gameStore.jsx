@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 
 const SPOTLIGHT_CONFIG = {
   MIN_ANGLE: Math.PI / 160,
@@ -46,6 +46,7 @@ export const useGameStore = create((set, get) => ({
   score: 0,
   //health: 100,
   //ammo: 100,
+  gameState: "playing",
   playing: true,
   isGameOver: false,
   isPaused: false,
@@ -56,6 +57,10 @@ export const useGameStore = create((set, get) => ({
   getSpotlightConfig: () => SPOTLIGHT_CONFIG,
   getPlaneConfig: () => PLANE_CONFIG,
   //getDifficultySettings: () => DIFICULTY_SETTINGS[get().difficulty],
+
+  startGame: () => {
+    set(() => ({ playing: true }));
+  },
 
   addScore: (points) => {
     set((state) => ({ score: state.score + points }));
@@ -132,6 +137,7 @@ export const useGameStore = create((set, get) => ({
 
   addEnemy: (enemy) => {
     set((state) => ({ activeEnemies: [...state.activeEnemies, enemy] }));
+    //console.log(activeEnemies);
   },
 
   removeEnemy: (enemyId) => {

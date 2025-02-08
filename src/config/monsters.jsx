@@ -35,7 +35,7 @@ export const MONSTERS = [
     component: "Skeleton",
     baseHealth: 100,
     speed: 1,
-    model: "./models/skeleton-transformed.glb",
+    model: "./models/Skeleton20.glb",
     canTakeDamage: true,
     animations: {
       walk: "Walk",

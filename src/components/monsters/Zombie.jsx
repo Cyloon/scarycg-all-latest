@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BaseMonster } from "./BaseMonster";
 import { MONSTERS } from "../../config/monsters";
 
-export function Zombie({ position, id }) {
+export default function Zombie({ position, id }) {
   const zombieConfig = MONSTERS.find((m) => m.type === "zombie");
 
   return (
