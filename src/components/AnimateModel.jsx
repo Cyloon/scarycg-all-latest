@@ -6,6 +6,7 @@ import * as THREE from "three";
 import { Healthbar } from "./Healthbar";
 
 function AnimatedModel({
+  key,
   component,
   points,
   healthbar,

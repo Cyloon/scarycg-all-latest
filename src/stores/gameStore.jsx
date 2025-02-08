@@ -1,7 +1,16 @@
 import create from "zustand";
 
+const SPOTLIGHT_CONFIG = {
+  MIN_ANGLE: Math.PI / 160,
+  MAX_ANGLE: Math.PI / 12,
+  DEFAULT_ANGLE: 0.05,
+  DAMAGE_CHECK_INTERVAL: 100,
+  RANDOM_POINTS: 5,
+  POSITION: [0, 0.9, 24],
+};
+
 const INITIAL_FLASHLIGHT = {
-  angle: Math.PI / 160,
+  angle: SPOTLIGHT_CONFIG.DEFAULT_ANGLE,
   bottomRadius: 1,
   intensity: 3,
   //battery: 100,
@@ -39,6 +48,8 @@ export const useGameStore = create((set, get) => ({
   flashlightState: INITIAL_FLASHLIGHT,
   activeEnemies: [],
   highScores: [],
+  getSpotlightConfig: () => SPOTLIGHT_CONFIG,
+  //getDifficultySettings: () => DIFICULTY_SETTINGS[get().difficulty],
 
   addScore: (points) => {
     set((state) => ({ score: state.score + points }));
@@ -65,13 +76,28 @@ export const useGameStore = create((set, get) => ({
   },
 
   updateFlashlight: (updates) => {
+    set((state) => {
+      const newState = { ...state.flashlightState, ...updates };
+
+      if (newState.angle) {
+        newState.angle = Math.max(
+          SPOTLIGHT_CONFIG.MIN_ANGLE,
+          Math.min(SPOTLIGHT_CONFIG.MAX_ANGLE, newState.angle)
+        );
+      }
+
+      return { flashlightState: newState };
+    });
+  },
+
+  /*   updateFlashlight: (updates) => {
     set((state) => ({
       flashlightState: {
         ...state.flashlightState,
         ...updates,
       },
     }));
-  },
+  }, */
 
   togglePause: () => {
     set((state) => ({
