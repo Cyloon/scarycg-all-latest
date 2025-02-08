@@ -6,7 +6,11 @@ const SPOTLIGHT_CONFIG = {
   DEFAULT_ANGLE: 0.05,
   DAMAGE_CHECK_INTERVAL: 100,
   RANDOM_POINTS: 5,
-  POSITION: [0, 0.9, 24],
+  SPOTLIGHT_POSITION: [0, 0.9, 24],
+};
+
+const PLANE_CONFIG = {
+  PLANE_POSITION: [0, 0, -5],
 };
 
 const INITIAL_FLASHLIGHT = {
@@ -49,6 +53,7 @@ export const useGameStore = create((set, get) => ({
   activeEnemies: [],
   highScores: [],
   getSpotlightConfig: () => SPOTLIGHT_CONFIG,
+  getPlaneConfig: () => PLANE_CONFIG,
   //getDifficultySettings: () => DIFICULTY_SETTINGS[get().difficulty],
 
   addScore: (points) => {

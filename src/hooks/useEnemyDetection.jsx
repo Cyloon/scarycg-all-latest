@@ -11,28 +11,41 @@ export function useEnemyDetection({
 }) {
   const raycasterRef = useRef(new Raycaster());
 
-  const generateRandomPointsInCone = useCallback((numPoints, radius) => {
-    return Array.from({ length: numPoints }, () => {
-      const angle = Math.random() * Math.PI * 2;
-      const r = Math.random() * radius;
-      return new Vector3(Math.cos(angle) * r, Math.sin(angle) * r, 0);
-    });
-  }, []);
+  const randomPointsCache = useRef([]);
+
+  const direction = new Vector3();
+
+  const updateRandomPoints = useCallback(
+    (bottomRadius) => {
+      if (!randomPointsCache.current.length) {
+        randomPointsCache.current = Array.from(
+          { length: config.RANDOM_POINTS },
+          () => new Vector3()
+        );
+      }
+
+      randomPointsCache.current.forEach((point) => {
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.random() * bottomRadius;
+        point.set(Math.cos(angle) * r, Math.sin(angle) * r, 0);
+      });
+
+      return randomPointsCache.current;
+    },
+    [config.RANDOM_POINTS]
+  );
 
   const checkForEnemyHits = useCallback(() => {
     if (!lightRef.current || !scene || isPaused) return;
     if (bottomRadius <= 0) return;
 
-    const lightPosition = lightRef.current.position.cone();
+    const lightPosition = lightRef.current.position.clone();
+    const randomPoints = updateRandomPoints(bottomRadius);
 
     try {
-      const randomPoints = generateRandomPointsInCone(
-        config.RANDOM_POINTS,
-        bottomRadius
-      );
+      for (const point of randomPoints) {
+        direction.copy(point).sub(lightPosition).normalize();
 
-      randomPoints.forEach((point) => {
-        const direction = point.clone().sub(lightPosition).normalize();
         raycasterRef.current.set(lightPosition, direction);
 
         const intersects = raycasterRef.current.intersectObjects(
@@ -40,23 +53,18 @@ export function useEnemyDetection({
           true
         );
 
-        const enemyHit = intersects.find((hit) => {
-          const object = hit.object;
-          return (
-            object.userData?.type === "enemy" &&
-            typeof object.userData?.handleDamage === "function"
-          );
-        });
-
-        if (enemyHit) {
-          try {
-            enemyHit.object.userData.handleDamage(1);
-            addScore(1);
-          } catch (error) {
-            console.warn("Error handling enemy damage:", error);
+        if (intersects.length > 0) {
+          const firstHit = intersects[0];
+          if (firstHit.object.userData?.type === "enemy") {
+            try {
+              firstHit.object.userData.handleDamage(1);
+              addScore(1);
+            } catch (error) {
+              console.warn("Error handling enemy damage:", error);
+            }
           }
         }
-      });
+      }
     } catch (error) {
       console.error("Error checking for enemy hits:", error);
     }

@@ -1,16 +1,18 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { SpotLight, useHelper, Html } from "@react-three/drei";
 import { Vector3, Raycaster, Vector2 } from "three";
-import { useGesture } from "@use-gesture/react";
-import { useEffect } from "react";
 import FlashlightModel from "./Flashlightmodel";
 import * as THREE from "three";
 import { useGameStore } from "../stores/gameStore";
 import { useSpotlightControls } from "../hooks/useSpotlightControls";
 import { useEnemyDetection } from "../hooks/useEnemyDetection";
-
-const PLANE_POSITION = [0, 0, -5];
 
 function Flashlight() {
   const {
@@ -19,17 +21,38 @@ function Flashlight() {
     addScore,
     isPaused,
     getSpotlightConfig,
+    getPlaneConfig,
   } = useGameStore();
 
   const { angle: spotlightAngle, bottomRadius } = flashlightState;
-  const config = getSpotlightConfig();
+  const config = useMemo(() => getSpotlightConfig(), []);
+
+  const spotlightProps = useMemo(
+    () => ({
+      castShadow: true,
+      intensity: 3,
+      angle: flashlightState.angle,
+      penumbra: 0.2,
+      distance: 40,
+      attenuation: 40,
+      anglePower: 0.0,
+      radiusBottom: bottomRadius,
+      radiusTop: 0.12,
+      decay: 0,
+      opacity: 0.08,
+    }),
+    [flashlightState.angle, bottomRadius]
+  );
 
   const lightRef = useRef(); // Spotlight reference
   const targetRef = useRef(new Vector3()); // Spotlight target reference
-  const raycasterRef = useRef(new Raycaster());
+  //const raycasterRef = useRef(new Raycaster());
   const planeRef = useRef();
 
-  const { camera, size, pointer, scene } = useThree(); // Get camera and viewport size
+  const { size, scene } = useThree(); // Get camera and viewport size
+
+  const pointer = useThree((state) => state.pointer);
+  const camera = useThree((state) => state.camera);
 
   const { bind } = useSpotlightControls({
     spotlightAngle,
@@ -68,7 +91,7 @@ function Flashlight() {
   }, [checkForEnemyHits, isPaused, config.DAMAGE_CHECK_INTERVAL]);
 
   useFrame(() => {
-    if (!planeRef.current || !lightRef.current) return;
+    if (!planeRef.current || !lightRef.current || isPaused) return;
 
     const ray = new Raycaster();
     ray.setFromCamera(pointer, camera);
@@ -86,19 +109,9 @@ function Flashlight() {
   return (
     <>
       <SpotLight
-        castShadow
         ref={lightRef}
-        position={[0, 0.9, 24]}
-        intensity={3}
-        angle={spotlightAngle}
-        penumbra={0.2}
-        distance={40}
-        attenuation={40}
-        anglePower={0.0}
-        radiusBottom={bottomRadius}
-        radiusTop={0.12}
-        decay={0}
-        opacity={0.08}
+        {...spotlightProps}
+        position={config.SPOTLIGHT_POSITION}
       />
       <SpotlightController />
 
@@ -106,13 +119,16 @@ function Flashlight() {
       <mesh
         ref={planeRef}
         visible={false}
-        position={PLANE_POSITION} // Place plane in front of the camera
+        position={config.PLANE_POSITION} // Place plane in front of the camera
         rotation={[0, 0, 0]} // Facing the camera
       >
         <planeGeometry args={[size.width, size.height]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      <FlashlightModel position={config.POSITION} lightRef={lightRef} />
+      <FlashlightModel
+        position={config.SPOTLIGHT_POSITION}
+        lightRef={lightRef}
+      />
     </>
   );
 }

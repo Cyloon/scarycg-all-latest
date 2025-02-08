@@ -20,7 +20,7 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import CurvePath from "./CurvePath";
 import AnimatedModel from "./AnimateModel";
-import Flashlight from "./Flashlight_org_rename_bc_test";
+import Flashlight from "./Flashlight";
 import Halloweenworld from "./Halloweenworld";
 import { Spider } from "./Spider";
 import RotatingStars from "./RotatingStars";
