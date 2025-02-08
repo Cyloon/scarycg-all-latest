@@ -24,31 +24,32 @@ const DIFICULTY_SETTINGS = {
   easy: {
     zombieSpeed: 0.5,
     zombieHealth: 50,
-    damageMultiplier: 0.7,
+    //damageMultiplier: 0.7,
 
     //batteryDrain: 0.5
   },
   medium: {
     zombieSpeed: 1,
     zombieHealth: 100,
-    damageMultiplier: 1,
+    //damageMultiplier: 1,
     //batteryDrain: 1
   },
   hard: {
     zombieSpeed: 1.5,
     zombieHealth: 150,
-    damageMultiplier: 1.3,
+    //damageMultiplier: 1.3,
     //batteryDrain: 1.5
   },
 };
 
 export const useGameStore = create((set, get) => ({
   score: 0,
-  health: 100,
+  //health: 100,
   //ammo: 100,
+  playing: true,
   isGameOver: false,
   isPaused: false,
-  difficulty: "easy",
+  //difficulty: "easy",
   flashlightState: INITIAL_FLASHLIGHT,
   activeEnemies: [],
   highScores: [],

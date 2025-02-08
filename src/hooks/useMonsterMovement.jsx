@@ -1,26 +1,48 @@
 import { useSpring } from "@react-spring/three";
+import { useFrame } from "@react-three/fiber";
 import { useEffect, useState } from "react";
 
 export function useMonsterMovement(points, speed = 1) {
   const [currentPointIndex, setCurrentPointIndex] = useState(0);
 
+  const curve = useMemo(() => {
+    const curvePoints = points.map((p) => new THREE.Vector3(...p));
+    return new THREE.CatmullRomCurve3(curvePoints);
+  }, [points]);
+
   const [springs, api] = useSpring(() => ({
-    position: points[0],
-    config: { mass: 1, tension: 120, friction: 14 },
+    progress: 0,
+    config: { duration: 1000 / speed, tension: 180, friction: 12 },
   }));
 
-  useEffect(() => {
-    const moveToNextPoint = () => {
-      setCurrentPointIndex((prev) => (prev + 1) % points.length);
-    };
+  useFrame(() => {
+    const progress = springs.progress.get();
+    const u = curve.getUtoTmapping(progress);
+    const position = curve.getPointAt(u);
+    const tangent = curve.getTangentAt(u);
 
+    return {
+      position,
+      rotation: new THREE.Euler().setFromQuaternion(
+        new THREE.Quaternion().setFromUnitVectors(
+          new THREE.Vector3(0, 0, 1),
+          tangent
+        )
+      ),
+    };
+  });
+
+  useEffect(() => {
     api.start({
-      position: points[currentPointIndex],
-      config: { duration: 1000 / speed },
-      onChange: () => {},
-      onRest: moveToNextPoint,
+      progress: 1,
+      reset: true,
+      loop: true,
+      delay: Math.random() * 5000,
+      onChange: () => {
+        //animation logic goes here
+      },
     });
-  }, [currentPointIndex, points, speed]);
+  }, []);
 
   return springs;
 }

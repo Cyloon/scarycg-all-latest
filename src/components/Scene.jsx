@@ -26,13 +26,14 @@ import { Spider } from "./Spider";
 import RotatingStars from "./RotatingStars";
 import { useState } from "react";
 import Zombieprespos from "./Zombieprespos";
+import { MonsterSpawner } from "./MonsterSpawner";
 
 //import * as THREE from "three";
 
 export function Scene() {
   const scaryfog = useRef();
   const startTime = useRef(Date.now()); //Date.now() is in milliseconds
-  const enemies = useGameStore((state) => state.enemies);
+  //const enemies = useGameStore((state) => state.enemies);
 
   const points = [
     [
@@ -158,18 +159,21 @@ export function Scene() {
       <Moon />
       <Moonlight />
       <Flashlight />
+      <MonsterSpawner />
 
+      {/* {enemies.map((enemy, index) => (
+        <AnimatedModel
+          key={enemy.id}
+          //component={<Zombie id={enemy.id} initialHealth={100} />}
+          //points={points[6]}
+          healthbar={true}
+        ></AnimatedModel>
+      ))} */}
+      {/* 
       <Float speed={3} floatIntensity={0.3} floatingRange={10}>
         <Bat2 position={[0, 4, 4]} />
       </Float>
-      {enemies.map((enemy, index) => (
-        <AnimatedModel
-          key={enemy.id}
-          component={<Zombie id={enemy.id} initialHealth={100} />}
-          points={points[6]}
-          healthbar={true}
-        ></AnimatedModel>
-      ))}
+      */}
       {/* <AnimatedModel
         component={<Skeleton20 />}
         points={points[1]}
@@ -185,16 +189,20 @@ export function Scene() {
         points={points[7]}
         healthbar={true}
       /> */}
+      {/* 
       <AnimatedModel
         component={<Spider />}
         points={points[8]}
         spawndelay={30000}
       />
+      */}
+      {/* 
       <AnimatedModel
         component={<Spider scale={0.15} timeScale={2} />}
         points={points[9]}
         spawndelay={20000}
       />
+      */}
       {/* 
       <Text position={[0, 10, 9]}>NOT</Text>
       <Text position={[0, 9, 9]}>WORKING</Text>

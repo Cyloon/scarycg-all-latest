@@ -18,8 +18,8 @@ export function MonsterSpawner() {
     removeEnemy,
     enemies,
     gameState,
-    currentWave,
-    increaseWave,
+    //currentWave,
+    //increaseWave,
   } = useGameStore();
 
   const spawnMonster = () => {
@@ -27,8 +27,8 @@ export function MonsterSpawner() {
       SPAWN_POINTS[Math.floor(Math.random() * SPAWN_POINTS.length)];
 
     let availableTypes = ["zombie"];
-    if (currentWave >= 2) availableTypes.push("bat");
-    if (currentWave >= 5) availableTypes.push("spider");
+    //if (currentWave >= 2) availableTypes.push("bat");
+    //if (currentWave >= 5) availableTypes.push("spider");
 
     const monsterType =
       availableTypes[Math.floor(Math.random() * availableTypes.length)];
@@ -43,8 +43,9 @@ export function MonsterSpawner() {
 
   useEffect(() => {
     if (gameState === "playing") {
-      const spawnInterval = Math.max(5000 - currentWave * 500, 1000);
-
+      //const spawnInterval = Math.max(5000, 1000);
+      // Generate a random delay between 0 and 5000 ms (0 to 5 seconds)
+      const spawnInterval = useMemo(() => Math.floor(Math.random() * 5000), []);
       spawnTimerRef.current = setInterval(spawnMonster, spawnInterval);
 
       return () => {
@@ -53,7 +54,7 @@ export function MonsterSpawner() {
         }
       };
     }
-  }, [gameState, currentWave]);
+  }, [gameState]);
 
   return (
     <>
